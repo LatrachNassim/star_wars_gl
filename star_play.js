@@ -81,9 +81,9 @@ city.star_play = {
         const geometry = new THREE.ConeBufferGeometry( 5, 20, 32 );
             const material2 = new THREE.MeshBasicMaterial( {color: 0xffff00} );
             const cone = new THREE.Mesh( geometry, material2 );
-            cone.position.set(1, 1, -60);
+            cone.position.set(1, 1, -10);
+            cone.rotateX(THREE.Math.degToRad(-90));
             cone.scale.set(0.02, 0.02, 0.02);
-            city.engine.scene.add(cone);
             city.engine.camera.add(cone);
             
             
@@ -91,7 +91,7 @@ city.star_play = {
             //city.star_play.caps.scale.set(0.02, 0.02, 0.02);
             //city.engine.scene.add(city.star_play.caps);
             //city.engine.camera.add(city.star_play.caps);
-            console.log("engine.star_play.caps added !");
+            console.log("cone added !");
 
             city.star_play.traverse = (function (child) {
                 if (child.isMesh) {
