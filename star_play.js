@@ -12,8 +12,8 @@ city.star_play = {
     init: function (config) {
         config = config || {};
 
-        
-        
+
+
         this.speed = config.speed || 1
         this.nb_building = config.nb_building || 50;
         this.cam = city.engine.camera
@@ -59,19 +59,6 @@ city.star_play = {
 
 
 
-        let building;
-
-        for (let j = 0; j < this.nb_building; j++) {
-            building = new THREE.Mesh(new THREE.CylinderGeometry(3, 10, 100, 32), material);
-            building.position.set(
-                Math.floor(Math.random() * this.field.width) - this.field.width * 0.5,
-                0, Math.floor(-Math.random() * this.field.height) * 5
-            );
-            scene.add(building);
-            this.buildings.push(building);
-
-
-        }
 
 
 
@@ -87,24 +74,32 @@ city.star_play = {
             city.star_play.build_texture(building);
         });
 
-        const loaderOBJ = new THREE.OBJLoader();
-        loaderOBJ.load('assets/source/nassim_final.obj', function (vaisseau) {
-            city.star_play.build_vaisseau(vaisseau);
-            city.star_play.caps = vaisseau;
-            city.star_play.caps.position.set(1, 1, -60);
-            city.star_play.caps.rotateY(THREE.Math.degToRad(180));
-            city.star_play.caps.set(0.02, 0.02, 0.02);
-            city.engine.scene.add(city.star_play.caps);
+        /*const loaderOBJ = new THREE.OBJLoader();
+        loaderOBJ.load('assets/source/nassim_final.obj', function (vaisseau) {*/
+            //city.star_play.build_vaisseau();
+            
+        const geometry = new THREE.ConeBufferGeometry( 5, 20, 32 );
+            const material2 = new THREE.MeshBasicMaterial( {color: 0xffff00} );
+            const cone = new THREE.Mesh( geometry, material2 );
+            cone.position.set(1, 1, -60);
+            cone.scale.set(0.02, 0.02, 0.02);
+            city.engine.scene.add(cone);
+            city.engine.camera.add(cone);
+            
+            
+            //city.star_play.caps.rotateY(THREE.Math.degToRad(180));
+            //city.star_play.caps.scale.set(0.02, 0.02, 0.02);
+            //city.engine.scene.add(city.star_play.caps);
             //city.engine.camera.add(city.star_play.caps);
             console.log("engine.star_play.caps added !");
 
-            city.star_play.traverse= (function (child) {
+            city.star_play.traverse = (function (child) {
                 if (child.isMesh) {
                     child.castShadow = true;
                     child.receiveShadow = true;
                 }
             });
-        });
+        
 
         const loaderMTL = new THREE.MTLLoader();
         loaderMTL.load('assets/source/nassim_final.mtl', function (texture) {
@@ -113,10 +108,7 @@ city.star_play = {
 
         const onKeyDown = function (event) {
             switch (event.keyCode) {
-                case 38: // up
-                    city.star_play.caps.translateY(1);
-                    console.log('up');
-                    break;
+
                 case 37: // left
                     city.star_play.caps.translateX(1);
                     console.log('left');
@@ -124,10 +116,7 @@ city.star_play = {
                     console.log("y : " + city.star_play.caps.position.y)
                     console.log("z : " + city.star_play.caps.position.z)
                     break;
-                case 40: // down
-                    city.star_play.caps.translateY(-1);
-                    console.log('down');
-                    break;
+
                 case 39: // right
                     city.star_play.caps.translateX(-1);
                     console.log('right');
@@ -141,6 +130,8 @@ city.star_play = {
         scene.background = new THREE.Color(0xff0000)
         scene.fog = new THREE.FogExp2(0xf2c824, 0.0025)
 
+        
+
         console.log('Game is ready');
 
     },
@@ -149,7 +140,7 @@ city.star_play = {
         const eng = city.engine;
 
         //deplacement
-        this.cam.translateZ(-this.speed);
+        //this.cam.translateZ(-this.speed);
 
         // building respawn
         for (let j = 0; j < this.buildings.length; j++) {
@@ -205,11 +196,7 @@ city.star_play = {
     }
 }
 
-//déplacement hors de l'écran :
-if (city.star_play.caps.x >= 40) city.star_play.caps.x -= 1;
-if (city.star_play.caps.x <= -40) city.star_play.caps.x += 1;
 
-if (city.star_play.caps.y <= -14) city.star_play.caps.y += 1;
-if (city.star_play.caps.y >= 16) city.star_play.caps.y -= 1;
+
 
 
